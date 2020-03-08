@@ -4,20 +4,20 @@
 
 - #### 启用@Async 
 基于注解启用方式
-```
+```java
 @Configuration  
 @EnableAsync  
 public class SpringAsyncConfig { ... } 
 ```	 
 
 - #### 基于XML配置启用方式
-```
+```xml
 <task:executor id="executor" pool-size="5" />
 <task:annotation-driven executor="executor"/>
 ```	 	 
 
 - #### 基于@Async无返回值调用
-```
+```java
 	/**
 	 * 仅使用异步注解的方式实现异步方法
 	 * 
@@ -36,7 +36,7 @@ public class SpringAsyncConfig { ... }
 ```	
 	 
 - #### 基于@Async返回值的调用
-```
+```java
 	/**
 	 * 异步任务 只需要在所需实现异步的方法上加上@Async注解， 并通过Future<T>来接受异步方法的处理结果
 	 * 通过@Async注解表明该方法是个异步方法，如果注解在类级别，则表明该类所有的方法都是异步方法
@@ -54,7 +54,7 @@ public class SpringAsyncConfig { ... }
 	}
 ```		 
 ***返回的数据类型为Future类型，实为一个接口，具体的结果类型为AsyncResult***	 
-```
+```java
 // 调用异步方法
 Future<Long> task = arithmeticService.subByAsync();
 // 接受异步方法结果
@@ -76,7 +76,7 @@ while (true) {
 ## 优化异步调用
     在上面，我使用了最简单spring async实现方式，同时在测试***基于@Async返回值的调用***中，
     使用缺省的TaskExecutor，出现了提示：
-```
+```text
 No TaskExecutor bean found for async processing
 ```
 ### 分析
@@ -87,7 +87,7 @@ No TaskExecutor bean found for async processing
     并通过在实际执行的Bean的方法中使用@Async注解来声明其是一个异步任务。	 
 	 
 ### 配置任务执行器
-```
+```java
 /**
  * 通过重写getAsyncExecutor方法，制定默认的任务执行由该方法产生
  * 
